@@ -10,6 +10,6 @@ router.get('/', function(req, res, next) {
 });
 // router.use(middleware.vrifyToken);
 router.post('/login', api.login);
-router.post('/authenticate', middleware.vrifyToken, api.authenticate);
+router.post('/authenticate', middleware.verifyToken, api.authenticate);
 
 export default router;
