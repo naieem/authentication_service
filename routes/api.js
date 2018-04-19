@@ -11,5 +11,6 @@ router.get('/', function(req, res, next) {
 // router.use(middleware.vrifyToken);
 router.post('/login', api.login);
 router.post('/authenticate', middleware.verifyToken, api.authenticate);
+router.post('/registration', api.registration);
 
 export default router;

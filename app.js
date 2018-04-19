@@ -6,6 +6,25 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import api from './routes/api';
 
+// ======================================
+// mongoose =============================
+// ======================================
+import mongoose from 'mongoose';
+mongoose.connect('mongodb://localhost/workflow');
+var db = mongoose.connection;
+db.on('error', function() {
+    console.log('------------------------------------');
+    console.log('mongodb not connected');
+    console.log('------------------------------------');
+});
+db.once('open', function() {
+    console.log('------------------------------------');
+    console.log('mongodb connected');
+    console.log('------------------------------------');
+});
+// ======================================
+// mongoose ends ========================
+// ======================================
 var app = express();
 
 // view engine setup
