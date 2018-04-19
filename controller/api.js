@@ -10,7 +10,7 @@ export default {
 
 function login(req, res, next) {
     authService.login(req.body).then((response) => {
-
+        debugger;
         if (!response.status) {
             res.status(500).json({
                 ErrorMessage: {

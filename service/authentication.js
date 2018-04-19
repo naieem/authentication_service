@@ -22,7 +22,7 @@ const registrationSchema = Joi.object().keys({
     lastname: Joi.string(),
     gender: Joi.string(),
     address: Joi.string()
-}).with('email', 'password').without('key', ['address', 'lastname', 'gender']);
+}).with('email', 'password').without('dummyKey', ['address', 'lastname', 'gender']);
 
 export default {
     login: login,
