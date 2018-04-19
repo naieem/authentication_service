@@ -1,6 +1,9 @@
 import user from '../models/user';
 import Joi from 'joi';
+import middleware from '../middleware/middleware';
+import redis from 'redis';
 
+var redisClient = redis.createClient(); //creates a new client
 /**
  * Schema definition for user to login 
  */
@@ -74,16 +77,35 @@ function registration(userInfo) {
 function login(userinformaton) {
     // fields which will be returned in result( space seperated field name)
     var returningFields = 'email';
-    return userSchema.validate(userinformaton, (err, value) => {
+    return loginSchema.validate(userinformaton, (err, value) => {
         return new Promise((resolve, reject) => {
             if (!err) {
                 user.find(userinformaton, returningFields, (error, userInfo) => {
                     if (!error) {
-                        if (userInfo.length)
-                            resolve({
-                                status: true,
-                                data: userInfo[0]
+                        if (userInfo.length){
+                            middleware.createToken(userinformaton).then((token) => {
+                                // storing token to redis storage
+                                redisClient.set(token,token,(error,value)=>{
+                                    if(value){
+                                        console.log('token saved in redis with id: ',token);
+                                        // sending back token to client side
+                                        userInfo[0].accessToken = token;
+                                        resolve({
+                                            status: true,
+                                            data: {
+                                                accessToken: token,
+                                                userInfo:userInfo[0]
+                                            }
+                                        });
+                                    }else{
+                                        resolve({
+                                            status: false,
+                                            data: 'token not saved to redis'
+                                        });
+                                    }
+                                });
                             });
+                        }
                         else {
                             resolve({
                                 status: false,

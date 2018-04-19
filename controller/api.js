@@ -10,32 +10,28 @@ export default {
 
 function login(req, res, next) {
     authService.login(req.body).then((response) => {
-        debugger;
         if (!response.status) {
+            console.log(response.message);
             res.status(500).json({
                 ErrorMessage: {
                     message: response.message
                 }
             });
         } else {
+            console.log('successfully created token and sent to as response');
             res.status(200).json({
                 status: 200,
                 data: response.data
             });
         }
     }, (error) => {
-
+        console.log(error);
+        res.status(500).json({
+            ErrorMessage: {
+                message: error
+            }
+        });
     });
-    // middleware.createToken(req.body).then((token) => {
-    //     res.status(200).json({
-    //         data: req.body,
-    //         token: token
-    //     });
-    // }, (error) => {
-    //     res.status(500).json({
-    //         error: error
-    //     });
-    // });
 }
 
 function authenticate(req, res, next) {

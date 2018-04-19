@@ -6,7 +6,6 @@ var private_key = fs.readFileSync('./keys/private.pem'); // get public key
 
 var execute = {
     verifyToken: function(req, res, next) {
-        //return new Promise((resolve, reject) => {
         if (req.headers && req.headers.authorization) {
             jwt.verify(req.headers.authorization, public_key, function(err, decoded) {
                 if (!err) {

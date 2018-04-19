@@ -5,11 +5,21 @@ import logger from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import api from './routes/api';
+import cors from 'cors';
+import redis from 'redis';
+import mongoose from 'mongoose';
 
+// ======================================
+// redis client setup ===================
+// ======================================
+var redisClient = redis.createClient(); //creates a new client
+// check if connection is ok
+redisClient.on('connect', function() {
+    console.log('redis connected');
+});
 // ======================================
 // mongoose =============================
 // ======================================
-import mongoose from 'mongoose';
 mongoose.connect('mongodb://localhost/workflow');
 var db = mongoose.connection;
 db.on('error', function() {
@@ -26,7 +36,7 @@ db.once('open', function() {
 // mongoose ends ========================
 // ======================================
 var app = express();
-
+app.use(cors()); // cros origin resource sharing activated
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -58,5 +68,4 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
-
 export default app;
