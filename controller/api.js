@@ -5,7 +5,6 @@ export default {
     login: login,
     authenticate: authenticate,
     registration: registration
-
 }
 
 function login(req, res, next) {
