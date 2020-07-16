@@ -28,6 +28,6 @@
         "babel-preset-stage-2": "^6.24.1",
         "babel-register": "^6.26.0",
         "jsonwebtoken": "^8.2.1",
-        "lodash": "^4.17.5"
+        "lodash": "^4.17.19"
     }
 }
